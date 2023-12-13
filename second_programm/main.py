@@ -2,12 +2,13 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication, QMessageBox, QFileDialog
 import sys
 from GUI.second_programm import Ui_Form
-from threads import MyThreadTimer, MyThreadCheckInputFile
+from threads import MyThreadTimer, MyThreadCheckInputFile, MyThreadCompareInputFile
 
 
 class SecondTestWindow(QtWidgets.QWidget):
     def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self, parent)
+        self.my_thread_compare_file = None
         self.my_thread_check_file = None
         self.my_thread_timer = None
         self.ui_second_test = Ui_Form()
@@ -18,6 +19,7 @@ class SecondTestWindow(QtWidgets.QWidget):
         self.button_stop.setEnabled(False)
         self.ui_second_test.pushButton_input_folder.clicked.connect(self.choose_folder_input)
         self.ui_second_test.pushButton_compare.clicked.connect(self.choose_folder_compare)
+        self.ui_second_test.pushButton_standart.clicked.connect(self.choose_folder_standard)
         self.setWindowTitle('Второй тест')
 
     def on_clicked(self):
@@ -32,11 +34,19 @@ class SecondTestWindow(QtWidgets.QWidget):
             self.my_thread_timer.finished.connect(self.on_finished_timer)
             self.my_thread_timer.mysignal.connect(self.on_change_timer, QtCore.Qt.QueuedConnection)
             self.my_thread_timer.start()
-            self.my_thread_check_file = MyThreadCheckInputFile(input_address=self.ui_second_test.lineEdit_input_folder.text(),
-                                                          compare_address=self.ui_second_test.lineEdit_for_compare.text())
+            self.my_thread_check_file = MyThreadCheckInputFile(
+                input_address=self.ui_second_test.lineEdit_input_folder.text(),
+                compare_address=self.ui_second_test.lineEdit_for_compare.text())
             self.my_thread_check_file.started.connect(self.on_started_check_file)
             self.my_thread_check_file.finished.connect(self.on_finished_timer)
             self.my_thread_check_file.start()
+            self.my_thread_compare_file = MyThreadCompareInputFile(
+                compare_address=self.ui_second_test.lineEdit_for_compare.text(),
+                standart_address=self.ui_second_test.lineEdit_standart.text())
+            self.my_thread_compare_file.started.connect(self.on_started_check_file)
+            self.my_thread_compare_file.finished.connect(self.on_finished_timer)
+            self.my_thread_compare_file.start()
+
         else:
             msg_box = QMessageBox()
             msg_box.setText("Поля не заполнены!")
@@ -48,6 +58,8 @@ class SecondTestWindow(QtWidgets.QWidget):
 
     def on_finished_timer(self):
         self.my_thread_timer.stop_word = 'stop'
+        self.my_thread_compare_file.stop_word = 'stop'
+        self.my_thread_check_file.stop_word = 'stop'
         self.button_stop.setEnabled(False)
         self.ui_second_test.pushButton_input_folder.setEnabled(True)
         self.ui_second_test.pushButton_compare.setEnabled(True)
@@ -69,6 +81,10 @@ class SecondTestWindow(QtWidgets.QWidget):
     def choose_folder_compare(self):
         dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
         self.ui_second_test.lineEdit_for_compare.setText(dirlist)
+
+    def choose_folder_standard(self):
+        dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
+        self.ui_second_test.lineEdit_standart.setText(dirlist)
 
     def on_started_check_file(self):
         pass

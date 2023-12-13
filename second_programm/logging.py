@@ -21,7 +21,7 @@ class LogFile:
         with open('log.txt', 'a', encoding='UTF-8') as file:
             file.write(
                 f'Файл {init_file} успешно прошел процесс сравнения {datetime.datetime.now()}\n'
-                f'Количество различий: {amount_difference}. Процент различия: {percent_difference}')
+                f'Количество различий: {amount_difference}. Процент различия: {percent_difference}\n')
 
     def compare_empty(self):
         with open('log.txt', 'a', encoding='UTF-8') as file:

@@ -19,7 +19,7 @@
 # print(datetime.now())
 
 a = {'1', '2', '5'}
-b = {'1'}
-c = {'1', '2', '3', '4'}
+b = {'test_3.txt'}
+c = {'test_3.txt', 'test_2.txt', 'test_1.txt', '4'}
 
-print(a - c)
+print(b.intersection(c))
