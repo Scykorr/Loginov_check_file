@@ -83,8 +83,22 @@ class MyThreadCompareInputFile(QtCore.QThread):
             if init_files:
                 for init_file in init_files:
                     self.logging.compare_not_empty(init_file)
+                    file1 = r"{path}/{filename}".format(
+                        path=self.compare_address,
+                        filename=init_file,
+                    )
+                    file2 = r"{path}/{filename}".format(
+                        path=self.standart_address,
+                        filename=init_file,
+                    )
 
-                    self.logging.compare_file(init_file)
+                    with open(file1, 'br') as of1, open(file2, 'br') as of2:
+                        l1 = of1.read()
+                        l2 = of2.read()
+                        full_size = len(set(enumerate(l1)))
+                        f1_f2_size = len(set(enumerate(l1)) - set(enumerate(l2)))
+                        percent_diff = round((f1_f2_size / full_size) * 100, 2)
+                    self.logging.compare_file(init_file, f1_f2_size,  percent_diff)
                     break
             else:
                 self.logging.compare_empty()

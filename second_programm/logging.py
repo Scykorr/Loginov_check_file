@@ -17,10 +17,11 @@ class LogFile:
             file.write(
                 f'Файл {init_file} успешно перемещен в папку для сравнения {datetime.datetime.now()}\n')
 
-    def compare_file(self, init_file):
+    def compare_file(self, init_file, amount_difference, percent_difference):
         with open('log.txt', 'a', encoding='UTF-8') as file:
             file.write(
-                f'Файл {init_file} успешно прошел процесс сравнения {datetime.datetime.now()}\n')
+                f'Файл {init_file} успешно прошел процесс сравнения {datetime.datetime.now()}\n'
+                f'Количество различий: {amount_difference}. Процент различия: {percent_difference}')
 
     def compare_empty(self):
         with open('log.txt', 'a', encoding='UTF-8') as file:
