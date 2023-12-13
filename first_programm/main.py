@@ -18,6 +18,7 @@ class FirstTestWindow(QtWidgets.QWidget):
         self.button_stop.setEnabled(False)
         self.ui_first_test.pushButton_files_folder.clicked.connect(self.choose_folder_files)
         self.ui_first_test.pushButton_diode.clicked.connect(self.choose_folder_diode)
+        self.setWindowTitle('Первый тест')
 
     def on_clicked(self):
         if self.ui_first_test.lineEdit_files_folder.text() != '' or self.ui_first_test.lineEdit_for_diode.text() != '':

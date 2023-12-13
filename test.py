@@ -1,14 +1,19 @@
+#
+# import os
+#
+# print(len(os.listdir('G:/programms/Loginov_check_file/first_programm/folder_with_files')))
+# print(len(os.listdir('G:/programms/Loginov_check_file/first_programm/folder_for_diode')))
+#
+# if os.listdir('G:/programms/Loginov_check_file/first_programm/folder_with_files'):
+#     print('hello')
+#
+# # import module
+# import shutil
+#
+# # copy the contents of the demo.py file to  a new file called demo1.py
+# shutil.copyfile('./demo.py', './demo1.py')
 
-import os
 
-print(len(os.listdir('G:/programms/Loginov_check_file/first_programm/folder_with_files')))
-print(len(os.listdir('G:/programms/Loginov_check_file/first_programm/folder_for_diode')))
+from datetime import datetime
 
-if os.listdir('G:/programms/Loginov_check_file/first_programm/folder_with_files'):
-    print('hello')
-
-# import module
-import shutil
-
-# copy the contents of the demo.py file to  a new file called demo1.py
-shutil.copyfile('./demo.py', './demo1.py')
+print(datetime.now())
