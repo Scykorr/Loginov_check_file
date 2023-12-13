@@ -31,35 +31,66 @@ class MyThreadTimer(QtCore.QThread):
                 self.mysignal.emit("%s" % self.time_format)
 
 
-class MyThreadCheckFile(QtCore.QThread):
+class MyThreadCheckInputFile(QtCore.QThread):
     mysignal = QtCore.pyqtSignal(str)
 
-    def __init__(self, parent=None, files_address: str = None, diode_address: str = None):
+    def __init__(self, parent=None, input_address: str = None, compare_address: str = None):
         QtCore.QThread.__init__(self, parent)
         self.stop_word = None
-        self.files_address = files_address
-        self.diode_address = diode_address
+        self.input_address = input_address
+        self.compare_address = compare_address
         self.logging = LogFile()
 
     def run(self):
-        init_files = self.get_file_list_folder_with_files()
-        if init_files:
-            for init_file in init_files:
-                while True:
-                    time.sleep(1)
-                    diode_files = self.get_file_list_folder_diode()
-                    if self.stop_word == 'stop':
-                        break
-                    elif not diode_files:
-                        self.logging.diode_empty()
-                        shutil.copyfile(f'{self.files_address}/{init_file}', f'{self.diode_address}/{init_file}')
-                        self.logging.copy_diode_folder(init_file)
-                        break
-                    elif diode_files:
-                        self.logging.diode_not_empty(init_file)
+        while True:
+            time.sleep(1)
+            if self.stop_word == 'stop':
+                break
+            init_files = self.get_files_input()
+            if init_files:
+                for init_file in init_files:
+                    self.logging.input_not_empty(init_file)
+                    shutil.copyfile(f'{self.input_address}/{init_file}',
+                                    f'{self.compare_address}/{init_file}')
+                    os.remove(f'{self.input_address}/{init_file}')
+                    self.logging.copy_file(init_file)
+                    break
+            else:
+                self.logging.input_empty()
 
-    def get_file_list_folder_with_files(self):
-        return os.listdir(self.files_address)
+    def get_files_input(self):
+        return os.listdir(self.input_address)
 
-    def get_file_list_folder_diode(self):
-        return os.listdir(self.diode_address)
+
+class MyThreadCompareInputFile(QtCore.QThread):
+    mysignal = QtCore.pyqtSignal(str)
+
+    def __init__(self, parent=None, compare_address: str = None, standart_address: str = None):
+        QtCore.QThread.__init__(self, parent)
+        self.stop_word = None
+        self.compare_address = compare_address
+        self.standart_address = standart_address
+        self.logging = LogFile()
+
+    def run(self):
+        while True:
+            time.sleep(1)
+            if self.stop_word == 'stop':
+                break
+            compare_files = self.get_files_compare()
+            standart_files = self.get_files_standart()
+            init_files = list(compare_files - standart_files)
+            if init_files:
+                for init_file in init_files:
+                    self.logging.compare_not_empty(init_file)
+
+                    self.logging.compare_file(init_file)
+                    break
+            else:
+                self.logging.compare_empty()
+
+    def get_files_compare(self):
+        return set(os.listdir(self.compare_address))
+
+    def get_files_standart(self):
+        return set(os.listdir(self.standart_address))

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>364</width>
-    <height>156</height>
+    <height>224</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,7 +33,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_diode">
+  <widget class="QLabel" name="label_compare">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -72,7 +72,7 @@
     <string>Выбрать</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_files_folder">
+  <widget class="QLabel" name="label_input_folder">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -89,7 +89,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>130</y>
+     <y>190</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -102,7 +102,7 @@
    <property name="geometry">
     <rect>
      <x>100</x>
-     <y>130</y>
+     <y>190</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -115,7 +115,7 @@
    <property name="geometry">
     <rect>
      <x>270</x>
-     <y>130</y>
+     <y>190</y>
      <width>91</width>
      <height>20</height>
     </rect>
@@ -128,13 +128,49 @@
    <property name="geometry">
     <rect>
      <x>180</x>
-     <y>130</y>
+     <y>190</y>
      <width>91</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
     <string>Прошло времени:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_standart">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>160</y>
+     <width>251</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_standart">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>160</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Выбрать</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_standart">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>130</y>
+     <width>221</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Путь до папки с эталонными файлами</string>
    </property>
   </widget>
  </widget>

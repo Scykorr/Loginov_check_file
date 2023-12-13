@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication, QMessageBox, QFileDialog
 import sys
 from GUI.second_programm import Ui_Form
-from threads import MyThreadTimer, MyThreadCheckFile
+from threads import MyThreadTimer, MyThreadCheckInputFile
 
 
 class SecondTestWindow(QtWidgets.QWidget):
@@ -26,13 +26,14 @@ class SecondTestWindow(QtWidgets.QWidget):
             self.ui_second_test.pushButton_start.setEnabled(False)
             self.ui_second_test.pushButton_input_folder.setEnabled(False)
             self.ui_second_test.pushButton_compare.setEnabled(False)
+            self.ui_second_test.pushButton_standart.setEnabled(False)
             self.my_thread_timer = MyThreadTimer()
             self.my_thread_timer.started.connect(self.on_started_timer)
             self.my_thread_timer.finished.connect(self.on_finished_timer)
             self.my_thread_timer.mysignal.connect(self.on_change_timer, QtCore.Qt.QueuedConnection)
             self.my_thread_timer.start()
-            self.my_thread_check_file = MyThreadCheckFile(files_address=self.ui_second_test.lineEdit_input_folder.text(),
-                                                          diode_address=self.ui_second_test.lineEdit_for_compare.text())
+            self.my_thread_check_file = MyThreadCheckInputFile(input_address=self.ui_second_test.lineEdit_input_folder.text(),
+                                                          compare_address=self.ui_second_test.lineEdit_for_compare.text())
             self.my_thread_check_file.started.connect(self.on_started_check_file)
             self.my_thread_check_file.finished.connect(self.on_finished_timer)
             self.my_thread_check_file.start()
@@ -51,6 +52,7 @@ class SecondTestWindow(QtWidgets.QWidget):
         self.ui_second_test.pushButton_input_folder.setEnabled(True)
         self.ui_second_test.pushButton_compare.setEnabled(True)
         self.ui_second_test.pushButton_start.setEnabled(True)
+        self.ui_second_test.pushButton_standart.setEnabled(True)
 
     def on_change_timer(self, s):
         self.ui_second_test.label_timer.setText(s)

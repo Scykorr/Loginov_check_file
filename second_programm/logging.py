@@ -15,9 +15,19 @@ class LogFile:
     def copy_file(self, init_file):
         with open('log.txt', 'a', encoding='UTF-8') as file:
             file.write(
-                f'Файл {init_file} успешно скопирован в папку для сравнения {datetime.datetime.now()}\n')
+                f'Файл {init_file} успешно перемещен в папку для сравнения {datetime.datetime.now()}\n')
 
     def compare_file(self, init_file):
         with open('log.txt', 'a', encoding='UTF-8') as file:
             file.write(
                 f'Файл {init_file} успешно прошел процесс сравнения {datetime.datetime.now()}\n')
+
+    def compare_empty(self):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файла в папке сравнения не оказалось {datetime.datetime.now()}\n')
+
+    def compare_not_empty(self, init_file):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файл {init_file} в папке сравнения {datetime.datetime.now()}\n')

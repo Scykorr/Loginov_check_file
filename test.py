@@ -14,6 +14,12 @@
 # shutil.copyfile('./demo.py', './demo1.py')
 
 
-from datetime import datetime
+# from datetime import datetime
+#
+# print(datetime.now())
 
-print(datetime.now())
+a = {'1', '2', '5'}
+b = {'1'}
+c = {'1', '2', '3', '4'}
+
+print(a - c)
