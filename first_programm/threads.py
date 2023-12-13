@@ -2,7 +2,8 @@ import os
 
 from PyQt5 import QtCore
 import time
-import datetime
+from logging import LogFile
+import shutil
 
 
 class MyThreadTimer(QtCore.QThread):
@@ -38,6 +39,7 @@ class MyThreadCheckFile(QtCore.QThread):
         self.stop_word = None
         self.files_address = files_address
         self.diode_address = diode_address
+        self.logging = LogFile()
 
     def run(self):
         init_time = 0
@@ -50,13 +52,12 @@ class MyThreadCheckFile(QtCore.QThread):
                     if self.stop_word == 'stop':
                         break
                     elif not diode_files:
-                        with open('log.txt', 'a', encoding='UTF-8') as file:
-                            file.write(
-                                f'Файла в папке для отправки не оказалось {datetime.datetime.now(datetime.UTC)}\n')
-                    elif not diode_files:
-                        with open('log.txt', 'a', encoding='UTF-8') as file:
-                            file.write(
-                                f'Файл {init_file} в папке для отправки {datetime.datetime.now(datetime.UTC)}\n')
+                        self.logging.diode_empty()
+                        shutil.copyfile(f'{self.files_address}/{init_file}', f'{self.diode_address}/{init_file}')
+                        self.logging.copy_diode_folder(init_file)
+                        break
+                    elif diode_files:
+                        self.logging.diode_not_empty(init_file)
 
     def get_file_list_folder_with_files(self):
         return os.listdir(self.files_address)

@@ -20,20 +20,26 @@ class FirstTestWindow(QtWidgets.QWidget):
         self.ui_first_test.pushButton_diode.clicked.connect(self.choose_folder_diode)
 
     def on_clicked(self):
-        self.button_stop.setEnabled(True)
-        self.ui_first_test.pushButton_start.setEnabled(False)
-        self.ui_first_test.pushButton_files_folder.setEnabled(False)
-        self.ui_first_test.pushButton_diode.setEnabled(False)
-        self.my_thread_timer = MyThreadTimer()
-        self.my_thread_timer.started.connect(self.on_started_timer)
-        self.my_thread_timer.finished.connect(self.on_finished_timer)
-        self.my_thread_timer.mysignal.connect(self.on_change_timer, QtCore.Qt.QueuedConnection)
-        self.my_thread_timer.start()
-        self.my_thread_check_file = MyThreadCheckFile(files_address=self.ui_first_test.lineEdit_files_folder.text(),
-                                                      diode_address=self.ui_first_test.lineEdit_for_diode.text())
-        self.my_thread_check_file.started.connect(self.on_started_check_file)
-        self.my_thread_check_file.finished.connect(self.on_finished_timer)
-        self.my_thread_check_file.start()
+        if self.ui_first_test.lineEdit_files_folder.text() != '' or self.ui_first_test.lineEdit_for_diode.text() != '':
+            self.button_stop.setEnabled(True)
+            self.ui_first_test.pushButton_start.setEnabled(False)
+            self.ui_first_test.pushButton_files_folder.setEnabled(False)
+            self.ui_first_test.pushButton_diode.setEnabled(False)
+            self.my_thread_timer = MyThreadTimer()
+            self.my_thread_timer.started.connect(self.on_started_timer)
+            self.my_thread_timer.finished.connect(self.on_finished_timer)
+            self.my_thread_timer.mysignal.connect(self.on_change_timer, QtCore.Qt.QueuedConnection)
+            self.my_thread_timer.start()
+            self.my_thread_check_file = MyThreadCheckFile(files_address=self.ui_first_test.lineEdit_files_folder.text(),
+                                                          diode_address=self.ui_first_test.lineEdit_for_diode.text())
+            self.my_thread_check_file.started.connect(self.on_started_check_file)
+            self.my_thread_check_file.finished.connect(self.on_finished_timer)
+            self.my_thread_check_file.start()
+        else:
+            msg_box = QMessageBox()
+            msg_box.setText("Поля не заполнены!")
+            msg_box.setWindowTitle("Внимание!")
+            msg_box.exec_()
 
     def on_started_timer(self):
         self.ui_first_test.label_timer.setText("")
