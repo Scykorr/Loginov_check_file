@@ -2,8 +2,41 @@ import os
 
 from PyQt5 import QtCore
 import time
-from logging import LogFile
 import shutil
+import datetime
+
+
+class LogFile:
+    def input_empty(self):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файла в папке получения не оказалось {datetime.datetime.now()}\n')
+
+    def input_not_empty(self, init_file):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файл {init_file} в папке получения {datetime.datetime.now()}\n')
+
+    def copy_file(self, init_file):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файл {init_file} успешно перемещен в папку для сравнения {datetime.datetime.now()}\n')
+
+    def compare_file(self, init_file, amount_difference, percent_difference):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файл {init_file} успешно прошел процесс сравнения {datetime.datetime.now()}\n'
+                f'Количество различий: {amount_difference}. Процент различия: {percent_difference}\n')
+
+    def compare_empty(self):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файла в папке сравнения не оказалось {datetime.datetime.now()}\n')
+
+    def compare_not_empty(self, init_file):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файл {init_file} в папке сравнения {datetime.datetime.now()}\n')
 
 
 class MyThreadTimer(QtCore.QThread):
@@ -100,7 +133,7 @@ class MyThreadCompareInputFile(QtCore.QThread):
                             full_size = len(set(enumerate(l1)))
                             f1_f2_size = len(set(enumerate(l1)) - set(enumerate(l2)))
                             percent_diff = round((f1_f2_size / full_size) * 100, 2)
-                        self.logging.compare_file(init_file, f1_f2_size,  percent_diff)
+                        self.logging.compare_file(init_file, f1_f2_size, percent_diff)
                         self.checking_files.append(init_file)
             else:
                 self.logging.compare_empty()

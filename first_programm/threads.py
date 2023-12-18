@@ -2,8 +2,25 @@ import os
 
 from PyQt5 import QtCore
 import time
-from logging import LogFile
 import shutil
+import datetime
+
+
+class LogFile:
+    def diode_empty(self):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файла в папке для отправки не оказалось {datetime.datetime.now()}\n')
+
+    def diode_not_empty(self, init_file):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файл {init_file} в папке для отправки {datetime.datetime.now()}\n')
+
+    def copy_diode_folder(self, init_file):
+        with open('log.txt', 'a', encoding='UTF-8') as file:
+            file.write(
+                f'Файл {init_file} успешно скопирован в папку для отправки {datetime.datetime.now()}\n')
 
 
 class MyThreadTimer(QtCore.QThread):
